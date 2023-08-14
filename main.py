@@ -66,24 +66,27 @@ def cf_update_record(zone_id, name, content, record_type, proxied, ttl, tags=Non
             print("Error Updating: " + name)
 
 
-def update(scheduler):
+def update(scheduler, prev_external_ip):
     external_ip = requests.get("https://api.ipify.org").text
-    zones = cf_get_zones()
-    for r in config['records']:
-        zone_found = False
-        for zone in zones:
-            if zone['name'] == r['zone']:
-                cf_update_record(zone['id'], r['name'], external_ip, r['type'], r['proxy'], r['ttl'])
-                zone_found = True
-                break
+    if external_ip != prev_external_ip:
+        zones = cf_get_zones()
+        for r in config['records']:
+            zone_found = False
+            for zone in zones:
+                if zone['name'] == r['zone']:
+                    cf_update_record(zone['id'], r['name'], external_ip, r['type'], r['proxy'], r['ttl'])
+                    zone_found = True
+                    break
 
-        if not zone_found:
-            print("Zone: " + r['zone'] + " not found")
+            if not zone_found:
+                print("Zone: " + r['zone'] + " not found")
+    else:
+        print("No Change")
 
-    scheduler.enter(config['update_delay'], 1, update, (scheduler,))
+    scheduler.enter(config['update_delay'], 1, update, (scheduler, external_ip))
 
 
 if __name__ == '__main__':
     main_scheduler = sched.scheduler(time.time, time.sleep)
-    main_scheduler.enter(0, 1, update, (main_scheduler,))
+    main_scheduler.enter(0, 1, update, (main_scheduler, '0'))
     main_scheduler.run()
