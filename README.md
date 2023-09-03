@@ -1,6 +1,6 @@
-# Cloudflare DDNS
+# cf-ddns
 
-Automatically update DNS records on Cloudflare to match current External IP Address.
+Automatically update DNS records on Cloudflare to match the current External IP Address.
 
 ## Setup
 
