@@ -1,3 +1,6 @@
+#  Copyright (c) 2023. Matthew Naruzny.
+#  All Rights Reserved.
+
 import json
 import sched
 import time
