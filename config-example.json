@@ -1,0 +1,14 @@
+{
+  "api_token" : "Bearer Token",
+  "api_email" : "example@example.com",
+  "update_delay" : 60,
+  "records" : [
+    {
+      "zone" : "mnaruzny.com",
+      "type" : "A",
+      "name" : "mnaruzny.com",
+      "ttl" : 1,
+      "proxy" : true
+    }
+  ]
+}
